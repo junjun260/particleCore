@@ -38,7 +38,7 @@ export class Matrix {
         });
     }
     /**
-     * @remarks 进行矩阵点乘
+     * @remarks 进行向量点乘
      * @param {Array} arr1 向量1
      * @param {Array} arr2 向量2
      * @returns 向量点乘结果
@@ -79,7 +79,7 @@ export class Matrix {
 
 export class Transformation {
     /**
-     * @remarks 将矩阵转换成齐次矩阵
+     * @remarks 将相对坐标组转换成齐次矩阵
      * @param {Array} coordinates 相对坐标组
      * @returns 齐次矩阵
      */
@@ -88,10 +88,10 @@ export class Transformation {
         return new Matrix(arr.length, arr[0].length, 0, arr);
     }
     /**
-     * @remarks 按比例向量缩放
-     * @param {Array} coordinates 相对坐标组[x,y,z]
+     * @remarks 按比例向量对相对坐标组进行缩放变换
+     * @param {Array} coordinates 相对坐标组
      * @param {Array} scaleVector 缩放向量[scale_z,scale_y,scale_z]
-     * @returns  按比例向量缩放后的相对坐标组
+     * @returns  按比例向量缩放变换后的相对坐标组
      */
     scaleTransformation(coordinates, scaleVector) {
         const coordMatrix = this.toHomogeneous(coordinates).transpose();
@@ -157,11 +157,11 @@ export class Transformation {
         return new Matrix(4, 4, 0, rotationArr);
     }
     /**
-     * @remarks 对相对坐标组进行旋转
+     * @remarks 对相对坐标组进行旋转变换
      * @param {Array} coordinates 相对坐标组
      * @param {string} axis 旋转轴
      * @param {number} angle 旋转角度
-     * @returns 进行旋转后的相对坐标组
+     * @returns 进行旋转变换后的相对坐标组
      */
     rotationTransformation(coordinates, axis, angle) {
         const coordMatrix = this.toHomogeneous(coordinates).transpose();
@@ -378,7 +378,13 @@ export class Calculator {
 
 
 export class Executor {
-    constructor(location, maxLifeTick = 20 * 3, initProgram) {
+    /**
+     * @remarks 创建一个执行器
+     * @param {import("@minecraft/server").Vector3} location 创建位置
+     * @param {number} maxLifeTick 最大寿命
+     * @param {Function} initProgram 初始时执行的函数
+     */
+    constructor(location, maxLifeTick = 20 * 3, initProgram =()=>{}) {
         this.location = location || { x: 0, y: 0, z: 0 };
         this.lifeTick = 0;
         this.maxLifeTick = maxLifeTick;
