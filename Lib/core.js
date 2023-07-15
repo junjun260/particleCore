@@ -89,7 +89,7 @@ export class Transformation {
     }
     /**
      * @remarks 按比例向量缩放
-     * @param {Matrix} coordinates 相对坐标组[x,y,z]
+     * @param {Array} coordinates 相对坐标组[x,y,z]
      * @param {Array} scaleVector 缩放向量[scale_z,scale_y,scale_z]
      * @returns  按比例向量缩放后的相对坐标组
      */
@@ -378,7 +378,7 @@ export class Calculator {
 
 
 export class Executor {
-    constructor(location, maxLifeTick = 20 * 3,initProgram) {
+    constructor(location, maxLifeTick = 20 * 3, initProgram) {
         this.location = location || { x: 0, y: 0, z: 0 };
         this.lifeTick = 0;
         this.maxLifeTick = maxLifeTick;
@@ -434,7 +434,7 @@ export class Executor {
      * @param {import("@minecraft/server").Vector3} coordObj 世界坐标
      * @param {Array} coordinates 相对坐标组
      */
-    static render(effectName, coordObj, coordinates, dimension) {
+    static render(effectName, dimension, coordObj, coordinates) {
         coordinates.forEach((arr) => {
             const dr = { x: arr[0] + coordObj.x, y: arr[1] + coordObj.y, z: arr[2] + coordObj.z };
             dimension.spawnParticle(effectName, dr, new MolangVariableMap());
